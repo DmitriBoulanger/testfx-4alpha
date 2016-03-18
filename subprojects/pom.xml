@@ -12,7 +12,7 @@
 	<artifactId>testfx-4alpha-reactor</artifactId>
 	<packaging>pom</packaging>
 	<name></name>
-	<url></url>
+	<url>https://github.com/TestFX/TestFX.git</url>
 	
 	 
 
@@ -21,6 +21,11 @@
 	</description>
 
 	<dependencies>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -33,7 +38,7 @@
 	</dependencies>
 	
 	<modules>
-		<module>tesfx-core</module>
+		<module>testfx-core</module>
 		<module>testfx-junit</module>
 		<module>testfx-legacy</module>
 	</modules>
