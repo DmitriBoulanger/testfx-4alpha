@@ -4,12 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>de.dbo.samples.javafx-testfx</groupId>
+		<groupId>de.dbo.samples.testfx</groupId>
 		<artifactId>testfx-4alpha-reactor</artifactId>
 		<version>0.0.0-SNAPSHOT</version>
 	</parent>
 
-    <groupId>org.testfx</groupId>
 	<artifactId>tesfx-legacy</artifactId>
 	<name>Samples Test FX 4 - Legacy</name>
 
