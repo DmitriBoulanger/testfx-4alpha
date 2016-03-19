@@ -20,7 +20,7 @@
 	<dependencies>
 	
 		<dependency>
-			<groupId>org.testfx</groupId>
+			<groupId>de.dbo.samples.testfx</groupId>
 			<artifactId>tesfx-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
