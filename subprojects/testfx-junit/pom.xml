@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>tesfx-junit</artifactId>
-	<name></name>
+	<name>Samples Test FX 4 - JUnit</name>
 	<url></url>
 
 	<description>
