@@ -11,11 +11,6 @@
 
 	<artifactId>tesfx-junit</artifactId>
 	<name>Samples Test FX 4 - JUnit</name>
-	<url></url>
-
-	<description>
-
-	</description>
 
 	<dependencies>
 	
@@ -24,36 +19,10 @@
 			<artifactId>tesfx-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-	
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>hamcrest-core</artifactId>
-					<groupId>org.hamcrest</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.controlsfx</groupId>
-			<artifactId>controlsfx</artifactId>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.testfx</groupId>
 			<artifactId>openjfx-monocle</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-all</artifactId>
 		</dependency>
 
 	</dependencies>

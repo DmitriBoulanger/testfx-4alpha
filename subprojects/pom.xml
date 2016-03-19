@@ -19,21 +19,53 @@
 	</description>
 
 	<dependencies>
-		
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-	</dependencies>
+
+	<dependency>
+		<groupId>org.controlsfx</groupId>
+		<artifactId>controlsfx</artifactId>
+	</dependency>
+
+	<dependency>
+		<groupId>com.google.guava</groupId>
+		<artifactId>guava</artifactId>
+	</dependency>
+
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<exclusions>
+			<exclusion>
+				<artifactId>hamcrest-core</artifactId>
+				<groupId>org.hamcrest</groupId>
+			</exclusion>
+			<exclusion>
+				<artifactId>hamcrest-all</artifactId>
+				<groupId>org.hamcrest</groupId>
+			</exclusion>
+		</exclusions>
+	</dependency>
+
+	<dependency>
+		<groupId>org.mockito</groupId>
+		<artifactId>mockito-core</artifactId>
+		<exclusions>
+			<exclusion>
+				<artifactId>hamcrest-core</artifactId>
+				<groupId>org.hamcrest</groupId>
+			</exclusion>
+			<exclusion>
+				<artifactId>hamcrest-all</artifactId>
+				<groupId>org.hamcrest</groupId>
+			</exclusion>
+		</exclusions>
+	</dependency>
+
+	<dependency>
+		<artifactId>hamcrest-all</artifactId>
+		<groupId>org.hamcrest</groupId>
+	</dependency>
+
+</dependencies>
 	
 	<modules>
 		<module>testfx-core</module>
