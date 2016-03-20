@@ -10,7 +10,7 @@
 		<relativePath/>
 	</parent>
 
-	<artifactId>testfx-4alpha-reactor</artifactId>
+	<artifactId>testfx-4alpha</artifactId>
 	<packaging>pom</packaging>
 	<name>Samples Test FX 4</name>
 	
