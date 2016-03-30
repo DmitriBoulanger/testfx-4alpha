@@ -16,6 +16,10 @@
  */
 package org.testfx.api;
 
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -41,10 +45,13 @@ import com.google.common.base.Predicate;
 import org.hamcrest.Matcher;
 import org.testfx.api.annotation.Unstable;
 import org.testfx.service.locator.PointLocator;
+import org.testfx.service.query.BoundsQuery;
 import org.testfx.service.query.NodeQuery;
 import org.testfx.service.query.PointQuery;
+import org.testfx.service.support.Capture;
+import org.testfx.util.BoundsQueryUtils;
 
-import static org.testfx.service.query.impl.NodeQueryUtils.isVisible;
+import static org.testfx.util.NodeQueryUtils.isVisible;
 import static org.testfx.util.WaitForAsyncUtils.asyncFx;
 import static org.testfx.util.WaitForAsyncUtils.waitFor;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
@@ -75,165 +82,6 @@ public class FxRobot implements FxRobotInterface {
     @Unstable(reason = "is missing apidocs")
     public FxRobotContext robotContext() {
         return context;
-    }
-
-    //---------------------------------------------------------------------------------------------
-    // METHODS FOR POINT POSITION.
-    //---------------------------------------------------------------------------------------------
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public FxRobot targetPos(Pos pointPosition) {
-        context.setPointPosition(pointPosition);
-        return this;
-    }
-
-    //---------------------------------------------------------------------------------------------
-    // METHODS FOR POINT LOCATION.
-    //---------------------------------------------------------------------------------------------
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery point(double x,
-                            double y) {
-        PointLocator pointLocator = context.getPointLocator();
-        Pos pointPosition = context.getPointPosition();
-        return pointLocator.pointFor(new Point2D(x, y)).atPosition(pointPosition);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery point(Point2D point) {
-        PointLocator pointLocator = context.getPointLocator();
-        Pos pointPosition = context.getPointPosition();
-        return pointLocator.pointFor(point).atPosition(pointPosition);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery point(Bounds bounds) {
-        PointLocator pointLocator = context.getPointLocator();
-        Pos pointPosition = context.getPointPosition();
-        return pointLocator.pointFor(bounds).atPosition(pointPosition);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery point(Node node) {
-        PointLocator pointLocator = context.getPointLocator();
-        Pos pointPosition = context.getPointPosition();
-        targetWindow(node.getScene().getWindow());
-        return pointLocator.pointFor(node).atPosition(pointPosition);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery point(Scene scene) {
-        PointLocator pointLocator = context.getPointLocator();
-        Pos pointPosition = context.getPointPosition();
-        targetWindow(scene.getWindow());
-        return pointLocator.pointFor(scene).atPosition(pointPosition);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery point(Window window) {
-        PointLocator pointLocator = context.getPointLocator();
-        Pos pointPosition = context.getPointPosition();
-        targetWindow(window);
-        return pointLocator.pointFor(window).atPosition(pointPosition);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery point(String query) {
-        NodeQuery nodeQuery = lookup(query);
-        Node node = queryFirstNode(nodeQuery, "the query \"" + query + "\"");
-        return point(node).atPosition(context.getPointPosition());
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs; might change to accept all objects")
-    public <T extends Node> PointQuery point(Matcher<T> matcher) {
-        NodeQuery nodeQuery = lookup(matcher);
-        Node node = queryFirstNode(nodeQuery, "the matcher \"" + matcher.toString() + "\"");
-        return point(node).atPosition(context.getPointPosition());
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public <T extends Node> PointQuery point(Predicate<T> predicate) {
-        NodeQuery nodeQuery = lookup(predicate);
-        Node node = queryFirstNode(nodeQuery, "the predicate");
-        return point(node).atPosition(context.getPointPosition());
-    }
-
-    //---------------------------------------------------------------------------------------------
-    // METHODS FOR POINT OFFSET.
-    //---------------------------------------------------------------------------------------------
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery offset(Point2D point,
-                             double offsetX,
-                             double offsetY) {
-        return point(point).atOffset(offsetX, offsetY);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery offset(Bounds bounds,
-                             double offsetX,
-                             double offsetY) {
-        return point(bounds).atOffset(offsetX, offsetY);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery offset(Node node,
-                             double offsetX,
-                             double offsetY) {
-        return point(node).atOffset(offsetX, offsetY);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery offset(Scene scene,
-                             double offsetX,
-                             double offsetY) {
-        return point(scene).atOffset(offsetX, offsetY);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery offset(Window window,
-                             double offsetX,
-                             double offsetY) {
-        return point(window).atOffset(offsetX, offsetY);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public PointQuery offset(String query,
-                             double offsetX,
-                             double offsetY) {
-        return point(query).atOffset(offsetX, offsetY);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs; might change to accept all objects")
-    public <T extends Node> PointQuery offset(Matcher<T> matcher,
-                                              double offsetX,
-                                              double offsetY) {
-        return point(matcher).atOffset(offsetX, offsetY);
-    }
-
-    @Override
-    @Unstable(reason = "is missing apidocs")
-    public <T extends Node> PointQuery offset(Predicate<T> predicate,
-                                              double offsetX,
-                                              double offsetY) {
-        return point(predicate).atOffset(offsetX, offsetY);
     }
 
     //---------------------------------------------------------------------------------------------
@@ -412,27 +260,267 @@ public class FxRobot implements FxRobotInterface {
     }
 
     //---------------------------------------------------------------------------------------------
+    // METHODS FOR BOUNDS LOCATION.
+    //---------------------------------------------------------------------------------------------
+
+    @Override
+    public BoundsQuery bounds(double minX,
+                              double minY,
+                              double width,
+                              double height) {
+        return () -> BoundsQueryUtils.bounds(minX, minY, width, height);
+    }
+
+    @Override
+    public BoundsQuery bounds(Point2D point) {
+        return () -> BoundsQueryUtils.bounds(point);
+    }
+
+    @Override
+    public BoundsQuery bounds(Bounds bounds) {
+        return () -> bounds;
+    }
+
+    @Override
+    public BoundsQuery bounds(Node node) {
+        return () -> BoundsQueryUtils.boundsOnScreen(node);
+    }
+
+    @Override
+    public BoundsQuery bounds(Scene scene) {
+        return () -> BoundsQueryUtils.boundsOnScreen(BoundsQueryUtils.bounds(scene), scene);
+    }
+
+    @Override
+    public BoundsQuery bounds(Window window) {
+        return () -> BoundsQueryUtils.boundsOnScreen(BoundsQueryUtils.bounds(window), window);
+    }
+
+    @Override
+    public BoundsQuery bounds(String query) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T extends Node> BoundsQuery bounds(Matcher<T> matcher) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T extends Node> BoundsQuery bounds(Predicate<T> predicate) {
+        throw new UnsupportedOperationException();
+    }
+
+    //---------------------------------------------------------------------------------------------
+    // METHODS FOR POINT POSITION.
+    //---------------------------------------------------------------------------------------------
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public FxRobot targetPos(Pos pointPosition) {
+        context.setPointPosition(pointPosition);
+        return this;
+    }
+
+    //---------------------------------------------------------------------------------------------
+    // METHODS FOR POINT LOCATION.
+    //---------------------------------------------------------------------------------------------
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery point(double x,
+                            double y) {
+        PointLocator pointLocator = context.getPointLocator();
+        Pos pointPosition = context.getPointPosition();
+        return pointLocator.point(new Point2D(x, y)).atPosition(pointPosition);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery point(Point2D point) {
+        PointLocator pointLocator = context.getPointLocator();
+        Pos pointPosition = context.getPointPosition();
+        return pointLocator.point(point).atPosition(pointPosition);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery point(Bounds bounds) {
+        PointLocator pointLocator = context.getPointLocator();
+        Pos pointPosition = context.getPointPosition();
+        return pointLocator.point(bounds).atPosition(pointPosition);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery point(Node node) {
+        PointLocator pointLocator = context.getPointLocator();
+        Pos pointPosition = context.getPointPosition();
+        targetWindow(node.getScene().getWindow());
+        return pointLocator.point(node).atPosition(pointPosition);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery point(Scene scene) {
+        PointLocator pointLocator = context.getPointLocator();
+        Pos pointPosition = context.getPointPosition();
+        targetWindow(scene.getWindow());
+        return pointLocator.point(scene).atPosition(pointPosition);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery point(Window window) {
+        PointLocator pointLocator = context.getPointLocator();
+        Pos pointPosition = context.getPointPosition();
+        targetWindow(window);
+        return pointLocator.point(window).atPosition(pointPosition);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery point(String query) {
+        NodeQuery nodeQuery = lookup(query);
+        Node node = queryNode(nodeQuery, "the query \"" + query + "\"");
+        return point(node).atPosition(context.getPointPosition());
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs; might change to accept all objects")
+    public <T extends Node> PointQuery point(Matcher<T> matcher) {
+        NodeQuery nodeQuery = lookup(matcher);
+        Node node = queryNode(nodeQuery, "the matcher \"" + matcher.toString() + "\"");
+        return point(node).atPosition(context.getPointPosition());
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public <T extends Node> PointQuery point(Predicate<T> predicate) {
+        NodeQuery nodeQuery = lookup(predicate);
+        Node node = queryNode(nodeQuery, "the predicate");
+        return point(node).atPosition(context.getPointPosition());
+    }
+
+    //---------------------------------------------------------------------------------------------
+    // METHODS FOR POINT OFFSET.
+    //---------------------------------------------------------------------------------------------
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery offset(Point2D point,
+                             double offsetX,
+                             double offsetY) {
+        return point(point).atOffset(offsetX, offsetY);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery offset(Bounds bounds,
+                             double offsetX,
+                             double offsetY) {
+        return point(bounds).atOffset(offsetX, offsetY);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery offset(Node node,
+                             double offsetX,
+                             double offsetY) {
+        return point(node).atOffset(offsetX, offsetY);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery offset(Scene scene,
+                             double offsetX,
+                             double offsetY) {
+        return point(scene).atOffset(offsetX, offsetY);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery offset(Window window,
+                             double offsetX,
+                             double offsetY) {
+        return point(window).atOffset(offsetX, offsetY);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public PointQuery offset(String query,
+                             double offsetX,
+                             double offsetY) {
+        return point(query).atOffset(offsetX, offsetY);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs; might change to accept all objects")
+    public <T extends Node> PointQuery offset(Matcher<T> matcher,
+                                              double offsetX,
+                                              double offsetY) {
+        return point(matcher).atOffset(offsetX, offsetY);
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public <T extends Node> PointQuery offset(Predicate<T> predicate,
+                                              double offsetX,
+                                              double offsetY) {
+        return point(predicate).atOffset(offsetX, offsetY);
+    }
+
+    //---------------------------------------------------------------------------------------------
     // METHODS FOR SCREEN CAPTURING.
     //---------------------------------------------------------------------------------------------
 
     @Override
-    @Unstable(reason = "likely to be refactored with builder pattern")
-    public Image capture(Screen screen) {
-        return context.getCaptureSupport().captureRegion(screen.getBounds());
+    @Unstable(reason = "is missing apidocs")
+    public Capture capture(Rectangle2D screenRegion) {
+        Image image = context.getCaptureSupport().captureRegion(screenRegion);
+        return () -> image;
     }
 
     @Override
-    @Unstable(reason = "likely to be refactored with builder pattern")
-    public Image capture(Bounds bounds) {
+    @Unstable(reason = "is missing apidocs")
+    public Capture capture(Bounds bounds) {
         Rectangle2D region = new Rectangle2D(bounds.getMinX(), bounds.getMinX(),
                                              bounds.getWidth(), bounds.getHeight());
-        return context.getCaptureSupport().captureRegion(region);
+        Image image = context.getCaptureSupport().captureRegion(region);
+        return () -> image;
     }
 
     @Override
-    @Unstable(reason = "likely to be refactored with builder pattern")
-    public Image capture(Node node) {
-        return context.getCaptureSupport().captureNode(node);
+    @Unstable(reason = "is missing apidocs")
+    public Capture capture(Node node) {
+        Image image = context.getCaptureSupport().captureNode(node);
+        return () -> image;
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public Capture capture(Image image) {
+        return () -> image;
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public Capture capture(Path path) {
+        Image image = context.getCaptureSupport().loadImage(path);
+        return () -> image;
+    }
+
+    @Override
+    @Unstable(reason = "is missing apidocs")
+    public Capture capture(URL url) {
+        try {
+            Path path = Paths.get(url.toURI());
+            Image image = context.getCaptureSupport().loadImage(path);
+            return () -> image;
+        }
+        catch (URISyntaxException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
     //---------------------------------------------------------------------------------------------
@@ -1081,25 +1169,25 @@ public class FxRobot implements FxRobotInterface {
 
     private PointQuery pointOfVisibleNode(String query) {
         NodeQuery nodeQuery = lookup(query);
-        Node node = queryFirstVisibleNode(nodeQuery, "the query \"" + query + "\"");
+        Node node = queryVisibleNode(nodeQuery, "the query \"" + query + "\"");
         return point(node);
     }
 
     private <T extends Node> PointQuery pointOfVisibleNode(Matcher<T> matcher) {
         NodeQuery nodeQuery = lookup(matcher);
-        Node node = queryFirstVisibleNode(nodeQuery, "the matcher \"" + matcher.toString() + "\"");
+        Node node = queryVisibleNode(nodeQuery, "the matcher \"" + matcher.toString() + "\"");
         return point(node);
     }
 
     private <T extends Node> PointQuery pointOfVisibleNode(Predicate<T> predicate) {
         NodeQuery nodeQuery = lookup(predicate);
-        Node node = queryFirstVisibleNode(nodeQuery, "the predicate");
+        Node node = queryVisibleNode(nodeQuery, "the predicate");
         return point(node);
     }
 
-    private Node queryFirstNode(NodeQuery nodeQuery,
-                                String queryDescription) {
-        Optional<Node> resultNode = nodeQuery.tryQueryFirst();
+    private Node queryNode(NodeQuery nodeQuery,
+                           String queryDescription) {
+        Optional<Node> resultNode = nodeQuery.tryQuery();
         if (!resultNode.isPresent()) {
             String message = queryDescription + " returned no nodes.";
             throw new FxRobotException(message);
@@ -1107,14 +1195,14 @@ public class FxRobot implements FxRobotInterface {
         return resultNode.get();
     }
 
-    private Node queryFirstVisibleNode(NodeQuery nodeQuery,
-                                       String queryDescription) {
+    private Node queryVisibleNode(NodeQuery nodeQuery,
+                                  String queryDescription) {
         Set<Node> resultNodes = nodeQuery.queryAll();
         if (resultNodes.isEmpty()) {
             String message = queryDescription + " returned no nodes.";
             throw new FxRobotException(message);
         }
-        Optional<Node> resultNode = from(resultNodes).select(isVisible()).tryQueryFirst();
+        Optional<Node> resultNode = from(resultNodes).match(isVisible()).tryQuery();
         if (!resultNode.isPresent()) {
             String message = queryDescription + " returned " + resultNodes.size() + " nodes" +
                 ", but no nodes were visible.";

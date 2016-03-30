@@ -16,6 +16,8 @@
  */
 package org.testfx.api;
 
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -24,6 +26,7 @@ import java.util.regex.Pattern;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.geometry.VerticalDirection;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -37,11 +40,80 @@ import javafx.stage.Window;
 import com.google.common.base.Predicate;
 import org.hamcrest.Matcher;
 import org.testfx.api.annotation.Unstable;
+import org.testfx.service.query.BoundsQuery;
 import org.testfx.service.query.NodeQuery;
 import org.testfx.service.query.PointQuery;
+import org.testfx.service.support.Capture;
 
 @Unstable(reason = "interface was recently added")
 public interface FxRobotInterface {
+
+    //---------------------------------------------------------------------------------------------
+    // METHODS FOR WINDOW TARGETING.
+    //---------------------------------------------------------------------------------------------
+
+    public Window targetWindow();
+    public FxRobotInterface targetWindow(Window window);
+    public FxRobotInterface targetWindow(Predicate<Window> predicate);
+
+    // Convenience methods:
+    public FxRobotInterface targetWindow(int windowIndex);
+    public FxRobotInterface targetWindow(String stageTitleRegex);
+    public FxRobotInterface targetWindow(Pattern stageTitlePattern);
+    public FxRobotInterface targetWindow(Scene scene);
+    public FxRobotInterface targetWindow(Node node);
+
+    //---------------------------------------------------------------------------------------------
+    // METHODS FOR WINDOW LOOKUP.
+    //---------------------------------------------------------------------------------------------
+
+    public List<Window> listWindows();
+    public List<Window> listTargetWindows();
+    public Window window(Predicate<Window> predicate);
+
+    // Convenience methods:
+    public Window window(int windowIndex);
+    public Window window(String stageTitleRegex);
+    public Window window(Pattern stageTitlePattern);
+    public Window window(Scene scene);
+    public Window window(Node node);
+
+    //---------------------------------------------------------------------------------------------
+    // METHODS FOR NODE LOOKUP.
+    //---------------------------------------------------------------------------------------------
+
+    public NodeQuery fromAll();
+    public NodeQuery from(Node... parentNodes);
+    public NodeQuery from(Collection<Node> parentNodes);
+
+    public Node rootNode(Window window);
+    public Node rootNode(Scene scene);
+    public Node rootNode(Node node);
+
+    // Convenience methods:
+    public NodeQuery lookup(String query);
+    public <T extends Node> NodeQuery lookup(Matcher<T> matcher);
+    public <T extends Node> NodeQuery lookup(Predicate<T> predicate);
+    public NodeQuery from(NodeQuery nodeQuery);
+
+    //---------------------------------------------------------------------------------------------
+    // METHODS FOR BOUNDS LOCATION.
+    //---------------------------------------------------------------------------------------------
+
+    public BoundsQuery bounds(double minX,
+                              double minY,
+                              double width,
+                              double height);
+    public BoundsQuery bounds(Point2D point);
+    public BoundsQuery bounds(Bounds bounds);
+    public BoundsQuery bounds(Node node);
+    public BoundsQuery bounds(Scene scene);
+    public BoundsQuery bounds(Window window);
+
+    // Convenience methods:
+    public BoundsQuery bounds(String query);
+    public <T extends Node> BoundsQuery bounds(Matcher<T> matcher);
+    public <T extends Node> BoundsQuery bounds(Predicate<T> predicate);
 
     //---------------------------------------------------------------------------------------------
     // METHODS FOR POINT POSITION.
@@ -99,60 +171,17 @@ public interface FxRobotInterface {
                                               double offsetY);
 
     //---------------------------------------------------------------------------------------------
-    // METHODS FOR WINDOW TARGETING.
-    //---------------------------------------------------------------------------------------------
-
-    public Window targetWindow();
-    public FxRobotInterface targetWindow(Window window);
-    public FxRobotInterface targetWindow(Predicate<Window> predicate);
-
-    // Convenience methods:
-    public FxRobotInterface targetWindow(int windowIndex);
-    public FxRobotInterface targetWindow(String stageTitleRegex);
-    public FxRobotInterface targetWindow(Pattern stageTitlePattern);
-    public FxRobotInterface targetWindow(Scene scene);
-    public FxRobotInterface targetWindow(Node node);
-
-    //---------------------------------------------------------------------------------------------
-    // METHODS FOR WINDOW LOOKUP.
-    //---------------------------------------------------------------------------------------------
-
-    public List<Window> listWindows();
-    public List<Window> listTargetWindows();
-    public Window window(Predicate<Window> predicate);
-
-    // Convenience methods:
-    public Window window(int windowIndex);
-    public Window window(String stageTitleRegex);
-    public Window window(Pattern stageTitlePattern);
-    public Window window(Scene scene);
-    public Window window(Node node);
-
-    //---------------------------------------------------------------------------------------------
-    // METHODS FOR NODE LOOKUP.
-    //---------------------------------------------------------------------------------------------
-
-    public NodeQuery fromAll();
-    public NodeQuery from(Node... parentNodes);
-    public NodeQuery from(Collection<Node> parentNodes);
-
-    public Node rootNode(Window window);
-    public Node rootNode(Scene scene);
-    public Node rootNode(Node node);
-
-    // Convenience methods:
-    public NodeQuery lookup(String query);
-    public <T extends Node> NodeQuery lookup(Matcher<T> matcher);
-    public <T extends Node> NodeQuery lookup(Predicate<T> predicate);
-    public NodeQuery from(NodeQuery nodeQuery);
-
-    //---------------------------------------------------------------------------------------------
     // METHODS FOR SCREEN CAPTURING.
     //---------------------------------------------------------------------------------------------
 
-    public Image capture(Screen screen);
-    public Image capture(Bounds bounds);
-    public Image capture(Node node);
+    public Capture capture(Rectangle2D screenRegion);
+    public Capture capture(Bounds bounds);
+    public Capture capture(Node node);
+
+    // Convenience methods:
+    public Capture capture(Image image);
+    public Capture capture(Path path);
+    public Capture capture(URL url);
 
     //---------------------------------------------------------------------------------------------
     // METHODS FOR INTERACTION AND INTERRUPTION.
@@ -163,6 +192,14 @@ public interface FxRobotInterface {
 
     public FxRobotInterface interrupt();
     public FxRobotInterface interrupt(int attemptsCount);
+
+    //---------------------------------------------------------------------------------------------
+    // METHODS FOR SLEEPING.
+    //---------------------------------------------------------------------------------------------
+
+    public FxRobotInterface sleep(long milliseconds);
+    public FxRobotInterface sleep(long duration,
+                                  TimeUnit timeUnit);
 
     //---------------------------------------------------------------------------------------------
     // METHODS FOR CLICKING.
@@ -324,14 +361,6 @@ public interface FxRobotInterface {
 
     // Convenience methods:
     public FxRobotInterface scroll(VerticalDirection direction);
-
-    //---------------------------------------------------------------------------------------------
-    // METHODS FOR SLEEPING.
-    //---------------------------------------------------------------------------------------------
-
-    public FxRobotInterface sleep(long milliseconds);
-    public FxRobotInterface sleep(long duration,
-                                  TimeUnit timeUnit);
 
     //---------------------------------------------------------------------------------------------
     // METHODS FOR TYPING.
