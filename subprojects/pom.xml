@@ -13,6 +13,7 @@
 	<artifactId>testfx-4alpha</artifactId>
 	<packaging>pom</packaging>
 	<name>Samples Test FX 4</name>
+	<url>https://github.com/TestFX</url>
 	
 	<description>
  
