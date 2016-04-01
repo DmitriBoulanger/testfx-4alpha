@@ -26,3 +26,4 @@ screenshot*.png
 tags
 
 /desktop.ini
+/target/
